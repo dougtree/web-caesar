@@ -16,6 +16,7 @@
 #
 import webapp2
 import caesar
+import cgi
 
 def page_builder(textarea_content):
     heading = "<h1>Web Caesar</h1>"
@@ -43,7 +44,8 @@ class MainHandler(webapp2.RequestHandler):
         message = self.request.get('message')
         rotation = int(self.request.get('rotation'))
         encrypted_message = caesar.encrypt(message, rotation)
-        content = page_builder(encrypted_message)
+        escaped_message = cgi.escape(encrypted_message)
+        content = page_builder(escaped_message)
         self.response.write(content)
 
 app = webapp2.WSGIApplication([
